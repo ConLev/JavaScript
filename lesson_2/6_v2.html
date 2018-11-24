@@ -1,0 +1,29 @@
+<meta charset="UTF-8">
+
+<script>
+    'use strict';
+
+    //По хорошему, надо добавить проверку на ввод "0" и "NaN". При вводе "6gfrgj" получим переполнение стека
+
+    let sum = +prompt('Введите сумму вклада: ');
+    let currency = "";
+
+    /**
+     * Функция вычисляет правильное склонение числительного
+     * @param {number} sum - сумма вклада
+     * @returns {string} - возвращает правильное склонением числительного
+     */
+    function deposit(sum) {
+        sum = sum % 10;
+        if (sum === 0 || sum >= 5) {
+            return currency = 'рублей';
+        } else if (sum === 1) {
+            return currency = 'рубль';
+        } else if (sum >= 2 && sum <= 4) {
+            return currency = 'рубля';
+        }
+    }
+
+    deposit(sum);
+    alert(`Ваша сумма в ${sum} ${currency} успешно зачислена`);
+</script>
