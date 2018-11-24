@@ -1,0 +1,62 @@
+<meta charset="UTF-8">
+
+<script>
+    'use strict';
+
+    let a = +prompt('Введите первое число: "a" ');
+    let b = +prompt('Введите второе число: "b" ');
+    let result;
+
+    /**
+     * Функция сложения чисел
+     * @param {number} a - первое число
+     * @param {number} b - второе число
+     * @returns {number} - возвращает сумму
+     */
+    function add(a, b) {
+        result = a + b;
+        return result;
+    }
+
+    /**
+     * Функция вычитания чисел
+     * @param {number} a - первое число
+     * @param {number} b - второе число
+     * @returns {number} - возвращает разность
+     */
+    function reduce(a, b) {
+        result = a - b;
+        return result;
+    }
+
+    /**
+     * Функция умножения чисел
+     * @param {number} a - первое число
+     * @param {number} b - второе число
+     * @returns {number} - возвращает произведение
+     */
+    function multiply(a, b) {
+        result = a * b;
+        return result;
+    }
+
+    /**
+     * Функция деления чисел
+     * @param {number} a - первое число
+     * @param {number} b - второе число
+     * @returns {number} - возвращает частное
+     */
+    function divide(a, b) {
+        result = a / b;
+        return result;
+    }
+
+    alert(`a + b = ${add(a, b)}`);
+    alert(`a - b = ${reduce(a, b)}`);
+    alert(`a * b = ${multiply(a, b)}`);
+    alert(`a / b = ${divide(a, b)}`);
+    console.log(`a + b = ${add(a, b)}`);
+    console.log(`a - b = ${reduce(a, b)}`);
+    console.log(`a * b = ${multiply(a, b)}`);
+    console.log(`a / b = ${divide(a, b)}`);
+</script>
