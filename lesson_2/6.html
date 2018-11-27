@@ -1,0 +1,33 @@
+<meta charset="UTF-8">
+
+<script>
+    'use strict';
+
+    //По хорошему, надо добавить проверку на ввод "0" и "NaN". При вводе "абра-кадабра" получим переполнение стека
+
+    let sum = +prompt('Введите сумму вклада: ');
+
+    /**
+     * Функция для определения правильного склонения числительного
+     * @param {number} sum - сумма
+     * @returns {string} - возвращает правильное склонение числительного
+     */
+    function deposit(sum) {
+        if (sum === 0 || sum >= 5 && sum <= 20) {
+            return 'рублей';
+        } else if (sum === 1) {
+            return 'рубль';
+        } else if (sum >= 2 && sum <= 4) {
+            return 'рубля';
+        } else if (sum >= 21 && sum <= 100) {
+            sum = sum % 10;
+            return deposit(sum);
+        } else {
+            sum = sum % 100;
+            return deposit(sum);
+        }
+    }
+
+    alert(`Ваша сумма в ${sum} ${deposit(sum)} успешно зачислена`);
+    console.log(`Ваша сумма в ${sum} ${deposit(sum)} успешно зачислена`);
+</script>

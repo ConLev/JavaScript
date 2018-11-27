@@ -1,0 +1,36 @@
+<meta charset="UTF-8">
+
+<script>
+    'use strict';
+
+    const amount = parseInt(prompt('Введите сумму вклада: '));
+    const correctDeclination = wordDeclension(amount, 'рубль', 'рубля', 'рублей');
+
+    /**
+     * Функция для определения правильного склонения числительного
+     * @param {number} count - число
+     * @param{string} one - первый вариант склонения числительного хранящегося во внешней константе
+     * @param{string} two - второй вариант склонения числительного хранящегося во внешней константе
+     * @param{string} five - третий вариант склонения числительного хранящегося во внешней константе
+     * @returns{string} - возвращает правильное склонение числительного
+     */
+    function wordDeclension(count, one, two, five) {
+        const n = Math.abs(count) % 100;
+        const n10 = n % 10;
+
+        if (n >= 5 && n <= 20) {
+            return five;
+        } else if (n10 > 1 && n10 < 5) {
+            return two;
+        } else if (n10 === 1) {
+            return one;
+        } else {
+            return five;
+        }
+    }
+
+    alert(`Ваша сумма в ${amount} ${correctDeclination} успешно зачислена`);
+    alert(`У Маши ${amount} ${wordDeclension(amount, 'яблоко', 'яблока', 'яблок')}`);
+    console.log(`Ваша сумма в ${amount} ${correctDeclination} успешно зачислена`);
+    console.log(`У Маши ${amount} ${wordDeclension(amount, 'яблоко', 'яблока', 'яблок')}`);
+</script>
