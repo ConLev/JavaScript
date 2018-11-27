@@ -3,27 +3,34 @@
 <script>
     'use strict';
 
-    //По хорошему, надо добавить проверку на ввод "0" и "NaN". При вводе "6gfrgj" получим переполнение стека
-
-    let sum = +prompt('Введите сумму вклада: ');
-    let currency = "";
+    const amount = parseInt(prompt('Введите сумму вклада: '));
+    const correctDeclination = wordDeclension(amount, 'рубль', 'рубля', 'рублей');
 
     /**
-     * Функция вычисляет правильное склонение числительного
-     * @param {number} sum - сумма вклада
-     * @returns {string} - возвращает правильное склонением числительного
+     * Функция для определения правильного склонения числительного
+     * @param {number} count - число
+     * @param{string} one - первый вариант склонения числительного хранящегося во внешней константе
+     * @param{string} two - второй вариант склонения числительного хранящегося во внешней константе
+     * @param{string} five - третий вариант склонения числительного хранящегося во внешней константе
+     * @returns{string} - возвращает правильное склонение числительного
      */
-    function deposit(sum) {
-        sum = sum % 10;
-        if (sum === 0 || sum >= 5) {
-            return currency = 'рублей';
-        } else if (sum === 1) {
-            return currency = 'рубль';
-        } else if (sum >= 2 && sum <= 4) {
-            return currency = 'рубля';
+    function wordDeclension(count, one, two, five) {
+        const n = Math.abs(count) % 100;
+        const n10 = n % 10;
+
+        if (n >= 5 && n <= 20) {
+            return five;
+        } else if (n10 > 1 && n10 < 5) {
+            return two;
+        } else if (n10 === 1) {
+            return one;
+        } else {
+            return five;
         }
     }
 
-    deposit(sum);
-    alert(`Ваша сумма в ${sum} ${currency} успешно зачислена`);
+    alert(`Ваша сумма в ${amount} ${correctDeclination} успешно зачислена`);
+    alert(`У Маши ${amount} ${wordDeclension(amount, 'яблоко', 'яблока', 'яблок')}`);
+    console.log(`Ваша сумма в ${amount} ${correctDeclination} успешно зачислена`);
+    console.log(`У Маши ${amount} ${wordDeclension(amount, 'яблоко', 'яблока', 'яблок')}`);
 </script>
