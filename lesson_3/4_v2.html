@@ -20,12 +20,11 @@
         if (number < 2) {
             return false;
         }
-        for (let j = 2; j <= number; j++) {
-            if (number % j === 0 && number === j) {
-                return true;
-            } else if (number % j === 0) {
+        for (let i = 2; i <= Math.sqrt(number); i++) {
+            if (number % i === 0) {
                 return false;
             }
         }
+        return true;
     }
 </script>
