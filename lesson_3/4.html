@@ -1,0 +1,31 @@
+<meta charset="UTF-8">
+
+<script>
+    'use strict';
+
+    let i = 0;
+    while (i <= 100) {
+        if (isPrimeNumber(i)) {
+            console.log(i);
+        }
+        i++;
+    }
+
+    /**
+     * Функция проверяет является ли число простым.
+     * @param {int} number - Число, которое проверяем.
+     * @returns {boolean} - Вернет true, если число простое, иначе false.
+     */
+    function isPrimeNumber(number) {
+        if (number < 2) {
+            return false;
+        }
+        for (let j = 2; j <= number; j++) {
+            if (number % j === 0 && number === j) {
+                return true;
+            } else if (number % j === 0) {
+                return false;
+            }
+        }
+    }
+</script>
