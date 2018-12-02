@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>WALKER</title>
+</head>
+<body>
+<script>
+    "use strict";
+
+    //Так и не разобрался с "x" и "y" в объекте player. Он хоть и не уходит в стену, но "x" и "y" меняются.
+    /**
+     * Объект с настройками игры.
+     * @property {int} rowsCount Количество строк в карте.
+     * @property {int} colsCount Количество колонок в карте.
+     * @property {int} startPositionX Начальная позиция игрока по X координате.
+     * @property {int} startPositionY Начальная позиция игрока по Y координате.
+     */
+    const settings = {
+        rowsCount: 10,
+        colsCount: 10,
+        startPositionX: 0,
+        startPositionY: 0,
+    };
+
+    const nextPosition = {
+        x: settings.startPositionX,
+        y: settings.startPositionY,
+    };
+
+    /**
+     * Объект игрока, здесь будут все методы и свойства связанные с ним.
+     * @property {int} x Позиция по X-координате.
+     * @property {int} y Позиция по Y-координате.
+     */
+    const player = {
+        x: nextPosition.x,
+        y: nextPosition.y,
+
+        /**
+         * Отдает следующую точку в которой будет находиться пользователь после движения.
+         * @param {int} direction Направление движения игрока.
+         * @returns {{x: int, y: int}} Следующая позиция игрока.
+         */
+        getNextPosition(direction) {
+            // Определяем направление и обновляем местоположение игрока в зависимости от направления.
+            switch (direction) {
+                case 1:
+                    this.x++;
+                    this.y++;
+                    return this;
+                case 2:
+                    this.y++;
+                    return this;
+                case 3:
+                    this.x--;
+                    this.y++;
+                    return this;
+                case 4:
+                    this.x--;
+                    return this;
+                case 6:
+                    this.x++;
+                    return this;
+                case 7:
+                    this.x++;
+                    this.y--;
+                    return this;
+                case 8:
+                    this.y--;
+                    return this;
+                case 9:
+                    this.x--;
+                    this.y--;
+                    return this;
+            }
+        },
+
+        /**
+         * Двигает игрока по переданному направлению.
+         * @param {{x: int, y: int}} nextPoint Следующая точка пользователя.
+         */
+        move(nextPoint) {
+            nextPosition.x = nextPoint.x;
+            nextPosition.y = nextPoint.y;
+        },
+    };
+
+    /**
+     * Объект игры, здесь будут все методы и свойства связанные с самой игрой в общем.
+     * @property {settings} settings Настройки игры.
+     * @property {player} player Игрок, участвующий в игре.
+     */
+    const game = {
+        settings,
+        player,
+
+        /**
+         * Запускает игру.
+         */
+        run() {
+            // Бесконечный цикл
+            while (true) {
+                // Отображаем нашу игру.
+                this.render();
+
+                // Получаем направление от игрока.
+                const direction = this.getDirection();
+
+                // Если игрок сказал что хочет выйти (набрал -1), значит выходим.
+                if (direction === -1) {
+                    alert('До свидания.');
+                    return;
+                }
+
+                // Получаем следующую точку пользователя в зависимости от направления.
+                const nextPoint = this.player.getNextPosition(direction);
+                // Если пользователь может пройти на новую точку, то двигаем игрока.
+                if (this.canPlayerMakeStep(nextPoint)) {
+                    this.player.move(nextPoint);
+                }
+            }
+        },
+
+        /**
+         * Проверяет может ли пользователь перейти на точку.
+         * @param {{x: int, y: int}} nextPoint Точка, которую проверяем.
+         * @returns {boolean} true если пользователь может перейти в направлении, false если нет.
+         */
+        canPlayerMakeStep(nextPoint) {
+            if (nextPoint.y >= 0 && nextPoint.y < this.settings.rowsCount
+                && nextPoint.x >= 0 && nextPoint.x < this.settings.colsCount) {
+                return true;
+            }
+        },
+
+        /**
+         * Отображает игру в консоли.
+         */
+        render() {
+            // Сюда запишем все что надо отобразить.
+            let map = "";
+
+            // Цикл перебирает все строки, которые надо отобразить.
+            for (let row = 0; row < this.settings.rowsCount; row++) {
+                // В каждой строке отображаем для каждой колонки (x - клетка, o - игрок).
+                for (let col = 0; col < this.settings.colsCount; col++) {
+                    // Проверяем, если на данной позиции должен быть и игрок, отображаем игрока, если нет - клетку.
+                    if (nextPosition.y === row && nextPosition.x === col) {
+                        map += 'o ';
+                    } else {
+                        map += 'x ';
+                    }
+                }
+                // После того как отобразили всю строку делаем переход на следующую строку.
+                map += '\n';
+            }
+
+            // Чистим консоль.
+            console.clear();
+            // Выводим все что надо отобразить в игре.
+            console.log(map);
+        },
+
+        /**
+         * Получает и отдает направление от пользователя.
+         * @returns {int} Возвращаем направление, введенное пользователем.
+         */
+        getDirection() {
+            // Доступные значения ввода.
+            const availableDirections = [-1, 1, 2, 3, 4, 6, 7, 8, 9];
+
+            while (true) {
+                // Получаем от пользователя направление.
+                const direction = parseInt(prompt('Введите число, куда вы хотите переместиться, -1 для выхода.'));
+
+                // Если направление не одно из доступных, то сообщаем что надо ввести корректные данные
+                // и начинаем новую итерацию.
+                if (!availableDirections.includes(direction)) {
+                    alert(`Для перемещения необходимо ввести одно из чисел: ${availableDirections.join(', ')}.`);
+                    continue;
+                }
+
+                // Если пользователь ввел корректное значение - отдаем его.
+                return direction;
+            }
+        },
+    };
+    // Запускаем игру.
+    game.run();
+</script>
+</body>
+</html>
