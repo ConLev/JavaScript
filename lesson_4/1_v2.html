@@ -22,10 +22,13 @@
             console.log('Значение аргумента должно быть целым числом в диапазоне [0 ... 999].');
             return {};
         }
-        return {
-            firstDigit: num % 10,
-            secondDigit: ((num % 100 - num % 10) / 10),
-            thirdDigit: (num - num % 100) / 100,
-        }
+
+        const obj = {};
+
+        obj.firstDigit = num % 10;
+        obj.secondDigit = Math.floor(num / 10) % 10;
+        obj.thirdDigit = Math.floor(num / 100);
+
+        return obj;
     }
 </script>

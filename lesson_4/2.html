@@ -8,7 +8,6 @@
 <script>
     "use strict";
 
-    //Так и не разобрался с "x" и "y" в объекте player. Он хоть и не уходит в стену, но "x" и "y" меняются.
     /**
      * Объект с настройками игры.
      * @property {int} rowsCount Количество строк в карте.
@@ -23,19 +22,22 @@
         startPositionY: 0,
     };
 
-    const nextPosition = {
-        x: settings.startPositionX,
-        y: settings.startPositionY,
-    };
-
     /**
      * Объект игрока, здесь будут все методы и свойства связанные с ним.
      * @property {int} x Позиция по X-координате.
      * @property {int} y Позиция по Y-координате.
      */
     const player = {
-        x: nextPosition.x,
-        y: nextPosition.y,
+        x: null,
+        y: null,
+
+        /**
+         * Инициализация игрока и его метоположения.
+         */
+        init(startX, startY) {
+            this.x = startX;
+            this.y = startY;
+        },
 
         /**
          * Отдает следующую точку в которой будет находиться пользователь после движения.
@@ -43,37 +45,43 @@
          * @returns {{x: int, y: int}} Следующая позиция игрока.
          */
         getNextPosition(direction) {
+            const nextPosition = {
+                x: this.x,
+                y: this.y,
+            };
+
             // Определяем направление и обновляем местоположение игрока в зависимости от направления.
             switch (direction) {
                 case 1:
-                    this.x++;
-                    this.y++;
-                    return this;
+                    nextPosition.x--;
+                    nextPosition.y++;
+                    break;
                 case 2:
-                    this.y++;
-                    return this;
+                    nextPosition.y++;
+                    break;
                 case 3:
-                    this.x--;
-                    this.y++;
-                    return this;
+                    nextPosition.x++;
+                    nextPosition.y++;
+                    break;
                 case 4:
-                    this.x--;
-                    return this;
+                    nextPosition.x--;
+                    break;
                 case 6:
-                    this.x++;
-                    return this;
+                    nextPosition.x++;
+                    break;
                 case 7:
-                    this.x++;
-                    this.y--;
-                    return this;
+                    nextPosition.x--;
+                    nextPosition.y--;
+                    break;
                 case 8:
-                    this.y--;
-                    return this;
+                    nextPosition.y--;
+                    break;
                 case 9:
-                    this.x--;
-                    this.y--;
-                    return this;
+                    nextPosition.x++;
+                    nextPosition.y--;
+                    break;
             }
+            return nextPosition;
         },
 
         /**
@@ -81,8 +89,8 @@
          * @param {{x: int, y: int}} nextPoint Следующая точка пользователя.
          */
         move(nextPoint) {
-            nextPosition.x = nextPoint.x;
-            nextPosition.y = nextPoint.y;
+            this.x = nextPoint.x;
+            this.y = nextPoint.y;
         },
     };
 
@@ -99,6 +107,8 @@
          * Запускает игру.
          */
         run() {
+            // Инициализируем игрока, ставим его начальное местоположение
+            this.player.init(this.settings.startPositionX, this.settings.startPositionY);
             // Бесконечный цикл
             while (true) {
                 // Отображаем нашу игру.
@@ -123,18 +133,6 @@
         },
 
         /**
-         * Проверяет может ли пользователь перейти на точку.
-         * @param {{x: int, y: int}} nextPoint Точка, которую проверяем.
-         * @returns {boolean} true если пользователь может перейти в направлении, false если нет.
-         */
-        canPlayerMakeStep(nextPoint) {
-            if (nextPoint.y >= 0 && nextPoint.y < this.settings.rowsCount
-                && nextPoint.x >= 0 && nextPoint.x < this.settings.colsCount) {
-                return true;
-            }
-        },
-
-        /**
          * Отображает игру в консоли.
          */
         render() {
@@ -146,7 +144,7 @@
                 // В каждой строке отображаем для каждой колонки (x - клетка, o - игрок).
                 for (let col = 0; col < this.settings.colsCount; col++) {
                     // Проверяем, если на данной позиции должен быть и игрок, отображаем игрока, если нет - клетку.
-                    if (nextPosition.y === row && nextPosition.x === col) {
+                    if (this.player.y === row && this.player.x === col) {
                         map += 'o ';
                     } else {
                         map += 'x ';
@@ -185,7 +183,20 @@
                 return direction;
             }
         },
+
+        /**
+         * Проверяет может ли пользователь перейти на точку.
+         * @param {{x: int, y: int}} nextPoint Точка, которую проверяем.
+         * @returns {boolean} true если пользователь может перейти в направлении, false если нет.
+         */
+        canPlayerMakeStep(nextPoint) {
+            if (nextPoint.x >= 0 && nextPoint.x < this.settings.colsCount
+                && nextPoint.y >= 0 && nextPoint.y < this.settings.rowsCount) {
+                return true;
+            }
+        },
     };
+
     // Запускаем игру.
     game.run();
 </script>
