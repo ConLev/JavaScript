@@ -7,7 +7,12 @@
  * @property {string} settings.openedImageClass Класс открытой картинки.
  * @property {string} settings.openedImageScreenClass Класс для ширмы открытой картинки.
  * @property {string} settings.openedImageCloseBtnClass Класс для картинки кнопки закрыть.
- * @property {string} settings.openedImageCloseBtnSrc Путь до картинки кнопки открыть.
+ * @property {string} settings.openedImageNextBtnClass Класс для картинки кнопки следующая картинка.
+ * @property {string} settings.openedImageBackBtnClass Класс для картинки кнопки предыдущая картинка.
+ * @property {string} settings.openedImageCloseBtnSrc Путь до картинки кнопки закрыть.
+ * @property {string} settings.openedImageNextBtnSrc Путь до картинки кнопки следующая картинка.
+ * @property {string} settings.openedImageBackBtnSrc Путь до картинки кнопки предыдущая картинка.
+ * @property {string} settings.notFoundImage Путь до картинки заглушки.
  */
 const gallery = {
     settings: {
@@ -16,8 +21,18 @@ const gallery = {
         openedImageClass: 'galleryWrapper__image',
         openedImageScreenClass: 'galleryWrapper__screen',
         openedImageCloseBtnClass: 'galleryWrapper__close',
+        openedImageNextBtnClass: 'galleryWrapper__next',
+        openedImageBackBtnClass: 'galleryWrapper__back',
         openedImageCloseBtnSrc: 'images/gallery/close.png',
+        openedImageNextBtnSrc: 'images/gallery/next.png',
+        openedImageBackBtnSrc: 'images/gallery/back.png',
+        notFoundImage: 'images/gallery/404.jpg',
     },
+
+    /**
+     * {Element} - Элемент миниатюры - картинки, которую мы открыли.
+     */
+    openedImageEl: {},
 
     /**
      * Инициализирует галерею, ставит обработчик события.
@@ -47,6 +62,7 @@ const gallery = {
         }
         // Открываем картинку с полученным из целевого тега (data-full_image_url аттрибут).
         this.openImage(event.target.dataset.full_image_url);
+        this.openedImageEl = event.target;
     },
 
     /**
@@ -56,6 +72,7 @@ const gallery = {
     openImage(src) {
         // Получаем контейнер для открытой картинки, в нем находим тег img и ставим ему нужный src.
         this.getScreenContainer().querySelector(`.${this.settings.openedImageClass}`).src = src;
+        this.getScreenContainer().querySelector(`.${this.settings.openedImageClass}`).alt = 'image';
     },
 
     /**
@@ -92,11 +109,30 @@ const gallery = {
         const closeImageElement = new Image();
         closeImageElement.classList.add(this.settings.openedImageCloseBtnClass);
         closeImageElement.src = this.settings.openedImageCloseBtnSrc;
+        closeImageElement.alt = 'close';
         closeImageElement.addEventListener('click', () => this.close());
         galleryWrapperElement.appendChild(closeImageElement);
 
+        // Создаем картинку для кнопки следующая картинка, ставим класс, src и добавляем ее в контейнер-обертку.
+        const nextImageElement = new Image();
+        nextImageElement.classList.add(this.settings.openedImageNextBtnClass);
+        nextImageElement.src = this.settings.openedImageNextBtnSrc;
+        nextImageElement.alt = 'next';
+        nextImageElement.addEventListener('click', () => this.getNextImage(this.openedImageEl));
+        galleryWrapperElement.appendChild(nextImageElement);
+
+        // Создаем картинку для кнопки предыдущая картинка, ставим класс, src и добавляем ее в контейнер-обертку.
+        const backImageElement = new Image();
+        backImageElement.classList.add(this.settings.openedImageBackBtnClass);
+        backImageElement.src = this.settings.openedImageBackBtnSrc;
+        backImageElement.alt = 'previous';
+        backImageElement.addEventListener('click', () => this.getPrevImage(this.openedImageEl));
+        galleryWrapperElement.appendChild(backImageElement);
+
         // Создаем картинку, которую хотим открыть, ставим класс и добавляем ее в контейнер-обертку.
         const image = new Image();
+        // Если картинка не доступна, выводим заглушку.
+        image.onerror = () => image.src = this.settings.notFoundImage;
         image.classList.add(this.settings.openedImageClass);
         galleryWrapperElement.appendChild(image);
 
@@ -112,7 +148,35 @@ const gallery = {
      */
     close() {
         document.querySelector(`.${this.settings.openedImageWrapperClass}`).remove();
-    }
+    },
+
+    /**
+     * Возвращает следующий элемент (картинку) от открытой или первую картинку в контейнере,
+     * если текущая открытая картинка последняя.
+     * @returns {Element} Следующую картинку от текущей открытой.
+     */
+    getNextImage(openedImageEl) {
+        if (openedImageEl.nextElementSibling === null) {
+            this.openImage(openedImageEl.parentNode.firstElementChild.dataset.full_image_url);
+            return this.openedImageEl = openedImageEl.parentNode.firstElementChild;
+        }
+        this.openImage(openedImageEl.nextElementSibling.dataset.full_image_url);
+        this.openedImageEl = openedImageEl.nextElementSibling;
+    },
+
+    /**
+     * Возвращает предыдущий элемент (картинку) от открытой или последнюю картинку в контейнере,
+     * если текущая открытая картинка первая.
+     * @returns {Element} Предыдущую картинку от текущей открытой.
+     */
+    getPrevImage(openedImageEl) {
+        if (openedImageEl.previousElementSibling === null) {
+            this.openImage(openedImageEl.parentNode.lastElementChild.dataset.full_image_url);
+            return this.openedImageEl = openedImageEl.parentNode.lastElementChild;
+        }
+        this.openImage(openedImageEl.previousElementSibling.dataset.full_image_url);
+        this.openedImageEl = openedImageEl.previousElementSibling;
+    },
 };
 
 // Инициализируем нашу галерею при загрузке страницы.
