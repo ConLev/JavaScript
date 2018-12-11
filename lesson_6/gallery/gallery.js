@@ -52,15 +52,17 @@ const gallery = {
 
     /**
      * Обработчик события клика для открытия картинки.
-     * @param {MouseEvent} event Событие клики мышью.
+     * @param {Event} event Событие клики мышью.
      * @param {HTMLElement} event.target Целевой объект, куда был произведен клик.
      */
     containerClickHandler(event) {
         // Если целевой тег не был картинкой, то ничего не делаем, просто завершаем функцию.
+        // noinspection JSUnresolvedVariable
         if (event.target.tagName !== 'IMG') {
             return;
         }
         // Открываем картинку с полученным из целевого тега (data-full_image_url аттрибут).
+        // noinspection JSUnresolvedVariable
         this.openImage(event.target.dataset.full_image_url);
         this.openedImageEl = event.target;
     },
@@ -72,7 +74,7 @@ const gallery = {
     openImage(src) {
         // Получаем контейнер для открытой картинки, в нем находим тег img и ставим ему нужный src.
         this.getScreenContainer().querySelector(`.${this.settings.openedImageClass}`).src = src;
-        this.getScreenContainer().querySelector(`.${this.settings.openedImageClass}`).alt = 'image';
+        this.getScreenContainer().querySelector(`.${this.settings.openedImageClass}`).alt = '';
     },
 
     /**
@@ -118,7 +120,7 @@ const gallery = {
         nextImageElement.classList.add(this.settings.openedImageNextBtnClass);
         nextImageElement.src = this.settings.openedImageNextBtnSrc;
         nextImageElement.alt = 'next';
-        nextImageElement.addEventListener('click', () => this.getNextImage(this.openedImageEl));
+        nextImageElement.addEventListener('click', () => this.getNextImage());
         galleryWrapperElement.appendChild(nextImageElement);
 
         // Создаем картинку для кнопки предыдущая картинка, ставим класс, src и добавляем ее в контейнер-обертку.
@@ -126,7 +128,7 @@ const gallery = {
         backImageElement.classList.add(this.settings.openedImageBackBtnClass);
         backImageElement.src = this.settings.openedImageBackBtnSrc;
         backImageElement.alt = 'previous';
-        backImageElement.addEventListener('click', () => this.getPrevImage(this.openedImageEl));
+        backImageElement.addEventListener('click', () => this.getPrevImage());
         galleryWrapperElement.appendChild(backImageElement);
 
         // Создаем картинку, которую хотим открыть, ставим класс и добавляем ее в контейнер-обертку.
@@ -155,13 +157,14 @@ const gallery = {
      * если текущая открытая картинка последняя.
      * @returns {Element} Следующую картинку от текущей открытой.
      */
-    getNextImage(openedImageEl) {
-        if (openedImageEl.nextElementSibling === null) {
-            this.openImage(openedImageEl.parentNode.firstElementChild.dataset.full_image_url);
-            return this.openedImageEl = openedImageEl.parentNode.firstElementChild;
+    getNextImage() {
+        if (this.openedImageEl.nextElementSibling === null) {
+            // noinspection JSUnresolvedVariable
+            this.openImage(this.openedImageEl.parentNode.firstElementChild.dataset.full_image_url);
+            return this.openedImageEl = this.openedImageEl.parentNode.firstElementChild;
         }
-        this.openImage(openedImageEl.nextElementSibling.dataset.full_image_url);
-        this.openedImageEl = openedImageEl.nextElementSibling;
+        this.openImage(this.openedImageEl.nextElementSibling.dataset.full_image_url);
+        this.openedImageEl = this.openedImageEl.nextElementSibling;
     },
 
     /**
@@ -169,13 +172,14 @@ const gallery = {
      * если текущая открытая картинка первая.
      * @returns {Element} Предыдущую картинку от текущей открытой.
      */
-    getPrevImage(openedImageEl) {
-        if (openedImageEl.previousElementSibling === null) {
-            this.openImage(openedImageEl.parentNode.lastElementChild.dataset.full_image_url);
-            return this.openedImageEl = openedImageEl.parentNode.lastElementChild;
+    getPrevImage() {
+        if (this.openedImageEl.previousElementSibling === null) {
+            // noinspection JSUnresolvedVariable
+            this.openImage(this.openedImageEl.parentNode.lastElementChild.dataset.full_image_url);
+            return this.openedImageEl = this.openedImageEl.parentNode.lastElementChild;
         }
-        this.openImage(openedImageEl.previousElementSibling.dataset.full_image_url);
-        this.openedImageEl = openedImageEl.previousElementSibling;
+        this.openImage(this.openedImageEl.previousElementSibling.dataset.full_image_url);
+        this.openedImageEl = this.openedImageEl.previousElementSibling;
     },
 };
 
