@@ -142,7 +142,8 @@ const map = {
      * Отображает все объекты на карте.
      * @param {{x: int, y: int}[]} snakePointsArray Массив с точками змейки.
      * @param {{x: int, y: int}} foodPoint Точка еды.
-     * @see {@link https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach|Array.prototype.forEach()}
+     * @see {@link https://developer.mozilla.org/ru/docs/Web/JavaScript/
+     * Reference/Global_Objects/Array/forEach|Array.prototype.forEach()}
      */
     render(snakePointsArray, foodPoint) {
         // Чистим карту от предыдущего рендера, всем занятым ячейкам оставляем только класс cell.
@@ -165,7 +166,7 @@ const map = {
         // Отображаем еду.
         foodCell.classList.add('food');
         // Добавляем элемент ячейки еды в массив занятых точек на карте.
-        this.usedCells.push(foodPoint);
+        this.usedCells.push(foodCell);
     },
 };
 
@@ -208,7 +209,8 @@ const snake = {
 
     /**
      * Проверяет содержит ли змейка переданную точку.
-     * @see {@link https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Array/some|Array.prototype.some()}
+     * @see {@link https://developer.mozilla.org/ru/docs/Web/JavaScript/
+     * Reference/Global_Objects/Array/some|Array.prototype.some()}
      * @param {{x: int, y: int}} point Точка, которую проверяем.
      * @returns {boolean} true, если змейка содержит переданную точку, иначе false.
      */
@@ -252,12 +254,24 @@ const snake = {
         // Возвращаем точку, где окажется голова змейки в зависимости от направления.
         switch (this.direction) {
             case 'up':
+                if (firstPoint.y === 0){
+                    return{y: settings.colsCount-1, x: firstPoint.x};
+                }
                 return {x: firstPoint.x, y: firstPoint.y - 1};
             case 'right':
+                if (firstPoint.x === settings.rowsCount-1){
+                    return{x: 0, y: firstPoint.y};
+                }
                 return {x: firstPoint.x + 1, y: firstPoint.y};
             case 'down':
+                if (firstPoint.y === settings.colsCount-1){
+                    return{y: 0, x: firstPoint.x};
+                }
                 return {x: firstPoint.x, y: firstPoint.y + 1};
             case 'left':
+                if (firstPoint.x === 0){
+                    return{x: settings.rowsCount-1, y: firstPoint.y};
+                }
                 return {x: firstPoint.x - 1, y: firstPoint.y};
         }
     },
@@ -356,6 +370,56 @@ const status = {
 };
 
 /**
+ * Объект счетчика. Подсчитывает очки пользователя.
+ * @property {int} count Очки пользователя.
+ * @property {HTMLElement} countEl DOM-элемент для вставки числа отображающего
+ * количество очков пользователя.
+ */
+const score = {
+    count: null,
+    countEl: null,
+
+    /**
+     * Инициализацирует счетчик.
+     */
+    init() {
+        // Находим элемент где будут отображаться очки пользователя и записываем в свойство countEl.
+        this.countEl = {};
+        this.countEl = document.getElementById('game-score');
+        // Вызываем метод drop текущего объекта чтоб сбросить счетчик.
+        this.drop();
+    },
+
+    /**
+     * Инкрементирует счетчик.
+     */
+    increment() {
+        // Инкрементируем счет пользователя
+        this.count = snake.body.length-1;
+        // Вызываем метод render текущего объекта
+        this.render();
+    },
+
+    /**
+     * Сбрасывает счетчик.
+     */
+    drop() {
+        // Ставим счет в 0.
+        this.count = 0;
+        // Вызываем метод render текущего объекта
+        this.render();
+    },
+
+    /**
+     * Отображает количество очков пользователю.
+     */
+    render() {
+        // Отображаем счет пользователя в DOM-элемент.
+        document.getElementById('score-count').innerText = this.count;
+    }
+};
+
+/**
  * Объект игры.
  * @property {settings} settings Настройки игры.
  * @property {map} map Объект отображения.
@@ -363,6 +427,7 @@ const status = {
  * @property {food} food Объект еды.
  * @property {status} status Статус игры.
  * @property {int} tickInterval Номер интервала игры.
+ * @property {int} score Счёт игры.
  */
 const game = {
     config,
@@ -371,6 +436,7 @@ const game = {
     food,
     status,
     tickInterval: null,
+    score,
 
     /**
      * Инициализация игры.
@@ -406,6 +472,8 @@ const game = {
         this.snake.init(this.getStartSnakeBody(), 'up');
         // Ставим еду на карту в случайную пустую ячейку.
         this.food.setCoordinates(this.getRandomFreeCoordinates());
+        // Инициализируем счётчик игры.
+        score.init();
         // Отображаем все что нужно для игры.
         this.render();
     },
@@ -451,15 +519,17 @@ const game = {
      */
     tickHandler() {
         // Если следующий шаг невозможен, то ставим игру в статус завершенный.
-        if (!this.canMakeStep()) {
+        /*if (!this.canMakeStep()) {
             return this.finish();
-        }
+        }*/
         // Если следующий шаг будет на еду, то заходим в if.
         if (this.food.isOnPoint(this.snake.getNextStepHeadPoint())) {
             // Прибавляем к змейке ячейку.
             this.snake.growUp();
             // Ставим еду в свободную ячейку.
             this.food.setCoordinates(this.getRandomFreeCoordinates());
+            // Увеличиваем счётчик игры.
+            score.increment();
             // Если выиграли, завершаем игру.
             if (this.isGameWon()) {
                 this.finish();
@@ -501,9 +571,11 @@ const game = {
      */
     setEventHandlers() {
         // При клике на кнопку с классом playButton вызвать функцию this.playClickHandler.
-        document.getElementById('playButton').addEventListener('click', () => this.playClickHandler());
+        document.getElementById('playButton').addEventListener('click',
+            () => this.playClickHandler());
         // При клике на кнопку с классом newGameButton вызвать функцию this.newGameClickHandler.
-        document.getElementById('newGameButton').addEventListener('click', event => this.newGameClickHandler(event));
+        document.getElementById('newGameButton').addEventListener('click',
+                event => this.newGameClickHandler(event));
         // При нажатии кнопки, если статус игры "играем", то вызываем функцию смены направления у змейки.
         // noinspection JSCheckFunctionSignatures
         document.addEventListener('keydown', event => this.keyDownHandler(event));
@@ -638,4 +710,4 @@ const game = {
 };
 
 // При загрузке страницы инициализируем игру.
-window.onload = game.init({speed: 5});
+window.onload = game.init({speed: 3});

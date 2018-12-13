@@ -18,6 +18,20 @@
     background: #009641;
 }
 
+#game-score{
+    width: 150px;
+    padding: 15px;
+    margin: 20px auto;
+    color: white;
+    background: #007b32;
+    text-align: center;
+}
+
+#score-count{
+    margin: 10px;
+    background: #007b32;
+}
+
 #game {
     border-collapse: collapse;
     margin: 2% auto 0;
