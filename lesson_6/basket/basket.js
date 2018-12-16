@@ -19,7 +19,7 @@ const basket = {
     /**
      * Инициализирует переменные для корзины и показывает эти значения.
      */
-    init(settings = {}) {
+    init() {
         this.countEl = document.querySelector(this.settings.countSelector);
         this.priceEl = document.querySelector(this.settings.priceSelector);
         const buttons = document.querySelectorAll('.buy-btn');
