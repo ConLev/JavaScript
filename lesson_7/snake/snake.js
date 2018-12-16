@@ -182,8 +182,8 @@ const snake = {
     body: null,
     direction: null,
     lastStepDirection: null,
-    maxX: settings.rowsCount,
-    maxY: settings.colsCount,
+    maxX: config.getRowsCount(),
+    maxY: config.getColsCount(),
 
     /**
      * Инициализирует змейку, откуда она будет начинать и ее направление.
