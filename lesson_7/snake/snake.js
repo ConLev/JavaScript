@@ -5,13 +5,13 @@
  * @property {int} rowsCount Количество строк.
  * @property {int} colsCount Количество колонок.
  * @property {int} speed Скорость змейки.
- * @property {int} winLength Длина змейки для победы.
+ * @property {int} winCount Количество очков для победы.
  */
 const settings = {
     rowsCount: 21,
     colsCount: 21,
     speed: 2,
-    winFoodCount: 50,
+    winCount: 50,
 };
 
 /**
@@ -52,10 +52,10 @@ const config = {
     },
 
     /**
-     * @returns {int} Отдает количество еды, которое надо съесть для победы.
+     * @returns {int} Отдает количество очков, которое надо набрать для победы.
      */
-    getWinFoodCount() {
-        return this.settings.winFoodCount;
+    getWinCount() {
+        return this.settings.winCount;
     },
 
     /**
@@ -175,11 +175,15 @@ const map = {
  * @property {{x: int, y: int}[]} body Массив с точками тела змейки.
  * @property {string} direction Направление, куда пользователь направил змейку.
  * @property {string} lastStepDirection Направление, куда сходила змейка прошлый раз.
+ * @property {int} maxX - Максимальная позиция головы змейки по X.
+ * @property {int} maxY - Максимальная позиция головы змейки по Y.
  */
 const snake = {
     body: null,
     direction: null,
     lastStepDirection: null,
+    maxX: settings.rowsCount,
+    maxY: settings.colsCount,
 
     /**
      * Инициализирует змейку, откуда она будет начинать и ее направление.
@@ -254,23 +258,23 @@ const snake = {
         // Возвращаем точку, где окажется голова змейки в зависимости от направления.
         switch (this.direction) {
             case 'up':
-                if (firstPoint.y === 0){
-                    return{y: settings.colsCount-1, x: firstPoint.x};
+                if (firstPoint.y === 0) {
+                    return {y: this.maxY - 1, x: firstPoint.x};
                 }
                 return {x: firstPoint.x, y: firstPoint.y - 1};
             case 'right':
-                if (firstPoint.x === settings.rowsCount-1){
-                    return{x: 0, y: firstPoint.y};
+                if (firstPoint.x === this.maxX - 1) {
+                    return {x: 0, y: firstPoint.y};
                 }
                 return {x: firstPoint.x + 1, y: firstPoint.y};
             case 'down':
-                if (firstPoint.y === settings.colsCount-1){
-                    return{y: 0, x: firstPoint.x};
+                if (firstPoint.y === this.maxY - 1) {
+                    return {y: 0, x: firstPoint.x};
                 }
                 return {x: firstPoint.x, y: firstPoint.y + 1};
             case 'left':
-                if (firstPoint.x === 0){
-                    return{x: settings.rowsCount-1, y: firstPoint.y};
+                if (firstPoint.x === 0) {
+                    return {x: this.maxX - 1, y: firstPoint.y};
                 }
                 return {x: firstPoint.x - 1, y: firstPoint.y};
         }
@@ -384,9 +388,8 @@ const score = {
      */
     init() {
         // Находим элемент где будут отображаться очки пользователя и записываем в свойство countEl.
-        this.countEl = {};
         this.countEl = document.getElementById('game-score');
-        // Вызываем метод drop текущего объекта чтоб сбросить счетчик.
+        // Вызываем метод drop текущего объекта чтобы сбросить счетчик.
         this.drop();
     },
 
@@ -395,7 +398,7 @@ const score = {
      */
     increment() {
         // Инкрементируем счет пользователя
-        this.count = snake.body.length-1;
+        this.count += 1;
         // Вызываем метод render текущего объекта
         this.render();
     },
@@ -420,6 +423,42 @@ const score = {
 };
 
 /**
+ * Объект сообщения. Выводит сообщение пользователю.
+ * @property {string} userMsg Сообщение пользователю.
+ * @property {HTMLElement} userMsgEl DOM-элемент для вставки сообщения пользователю.
+ */
+const msg = {
+    userMsg: null,
+    userMsgEl: null,
+
+    /**
+     * Инициализация.
+     */
+    init() {
+        // Находим элемент где будет отображаться сообщение пользователю и записываем в свойство userMsgEl.
+        this.userMsgEl = document.getElementById('user-msg');
+
+    },
+
+    /**
+     * Определяет сообщение по умолчанию.
+     */
+    defaultMsg() {
+        // Сообщение по умолчанию.
+        document.getElementById('user-msg').innerText = `Необходимо набрать: ${settings.winCount}`;
+    },
+
+    /**
+     * Отображает сообщение пользователю.
+     */
+    render(msg) {
+        // Отображаем сообщение пользователю в DOM-элемент.
+        this.userMsg = msg;
+        document.getElementById('user-msg').innerText = this.userMsg;
+    }
+};
+
+/**
  * Объект игры.
  * @property {settings} settings Настройки игры.
  * @property {map} map Объект отображения.
@@ -428,6 +467,7 @@ const score = {
  * @property {status} status Статус игры.
  * @property {int} tickInterval Номер интервала игры.
  * @property {int} score Счёт игры.
+ * @property {string} msg Выводит сообщение пользователю.
  */
 const game = {
     config,
@@ -437,6 +477,7 @@ const game = {
     status,
     tickInterval: null,
     score,
+    msg,
 
     /**
      * Инициализация игры.
@@ -460,6 +501,10 @@ const game = {
         this.setEventHandlers();
         // Ставим игру в начальное положение.
         this.reset();
+        // Инициализируем счётчик очков.
+        this.score.init();
+        // Инициализируем обработчик сообщений.
+        this.msg.init();
     },
 
     /**
@@ -472,8 +517,10 @@ const game = {
         this.snake.init(this.getStartSnakeBody(), 'up');
         // Ставим еду на карту в случайную пустую ячейку.
         this.food.setCoordinates(this.getRandomFreeCoordinates());
-        // Инициализируем счётчик игры.
-        score.init();
+        // Сбрасываем счётчик очков.
+        this.score.drop();
+        // Выводим сообщение по умолчанию.
+        this.msg.defaultMsg();
         // Отображаем все что нужно для игры.
         this.render();
     },
@@ -519,19 +566,20 @@ const game = {
      */
     tickHandler() {
         // Если следующий шаг невозможен, то ставим игру в статус завершенный.
-        /*if (!this.canMakeStep()) {
+        if (!this.canMakeStep()) {
+            this.msg.render('Вы проиграли.');
             return this.finish();
-        }*/
+        }
         // Если следующий шаг будет на еду, то заходим в if.
         if (this.food.isOnPoint(this.snake.getNextStepHeadPoint())) {
-            // Прибавляем к змейке ячейку.
+            // Прибавляем к змейке ячейку и добавляем к счёту одно очко.
             this.snake.growUp();
+            this.score.increment();
             // Ставим еду в свободную ячейку.
             this.food.setCoordinates(this.getRandomFreeCoordinates());
-            // Увеличиваем счётчик игры.
-            score.increment();
             // Если выиграли, завершаем игру.
             if (this.isGameWon()) {
+                this.msg.render('Вы выиграли!');
                 this.finish();
             }
         }
@@ -575,7 +623,7 @@ const game = {
             () => this.playClickHandler());
         // При клике на кнопку с классом newGameButton вызвать функцию this.newGameClickHandler.
         document.getElementById('newGameButton').addEventListener('click',
-                event => this.newGameClickHandler(event));
+            event => this.newGameClickHandler(event));
         // При нажатии кнопки, если статус игры "играем", то вызываем функцию смены направления у змейки.
         // noinspection JSCheckFunctionSignatures
         document.addEventListener('keydown', event => this.keyDownHandler(event));
@@ -686,11 +734,11 @@ const game = {
     },
 
     /**
-     * Проверяем произошла ли победа, судим по очкам игрока (длине змейки).
+     * Проверяем произошла ли победа, судим по очкам игрока.
      * @returns {boolean} true, если игрок выиграл игру, иначе false.
      */
     isGameWon() {
-        return this.snake.getBody().length > this.config.getWinFoodCount();
+        return this.score.count === this.config.getWinCount();
     },
 
     /**
@@ -700,12 +748,8 @@ const game = {
     canMakeStep() {
         // Получаем следующую точку головы змейки в соответствии с текущим направлением.
         const nextHeadPoint = this.snake.getNextStepHeadPoint();
-        // Змейка может сделать шаг если следующая точка не на теле змейки и точка внутри игрового поля.
-        return !this.snake.isOnPoint(nextHeadPoint) &&
-            nextHeadPoint.x < this.config.getColsCount() &&
-            nextHeadPoint.y < this.config.getRowsCount() &&
-            nextHeadPoint.x >= 0 &&
-            nextHeadPoint.y >= 0;
+        // Змейка может сделать шаг если следующая точка не на теле змейки.
+        return !this.snake.isOnPoint(nextHeadPoint)
     },
 };
 
