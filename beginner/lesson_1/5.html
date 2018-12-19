@@ -1,0 +1,15 @@
+<meta charset="UTF-8">
+
+<script>
+    'use strict';
+
+    let number = +prompt('Введите номер билета: ');
+    let firstDig = (number - number % 1000) / 1000;
+    let lastDig = number % 1000;
+
+    if (firstDig === lastDig) {
+        console.log('У Вас счастливый билет!')
+    } else {
+        console.log('У Вас обычный билет')
+    }
+</script>

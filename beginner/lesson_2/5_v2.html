@@ -1,0 +1,72 @@
+<meta charset="UTF-8">
+
+<script>
+    'use strict';
+
+    let a = +prompt('Введите первое число: "a" ');
+    let operation = prompt('Введите: " + ", " - ", " * ", " / " для выбора операции ');
+    let b = +prompt('Введите второе число: "b" ');
+
+    /**
+     * Функция сложения чисел
+     * @param {number} a - первое число
+     * @param {number} b - второе число
+     * @returns {number} - возвращает сумму
+     */
+    function add(a, b) {
+        return a + b;
+    }
+
+    /**
+     * Функция вычитания чисел
+     * @param {number} a - первое число
+     * @param {number} b - второе число
+     * @returns {number} - возвращает разность
+     */
+    function reduce(a, b) {
+        return a - b;
+    }
+
+    /**
+     * Функция умножения чисел
+     * @param {number} a - первое число
+     * @param {number} b - второе число
+     * @returns {number} - возвращает произведение
+     */
+    function multiply(a, b) {
+        return a * b;
+    }
+
+    /**
+     * Функция деления чисел
+     * @param {number} a - первое число
+     * @param {number} b - второе число
+     * @returns {number} - возвращает частное
+     */
+    function divide(a, b) {
+        return a / b;
+    }
+
+    /**
+     * Функция основных математических операций
+     * @param {number} a - первое число
+     * @param {number} b - второе число
+     * @param {string} operation - выбор операции
+     * @returns {number} - результат вычисления
+     */
+    function mathOperation(a, b, operation) {
+        switch (operation) {
+            case '+':
+                return add(a, b);
+            case '-':
+                return reduce(a, b);
+            case '*':
+                return multiply(a, b);
+            case '/':
+                return divide(a, b);
+        }
+    }
+
+    alert(`a ${operation} b = ${mathOperation(a, b, operation)}`);
+    console.log(`a ${operation} b = ${mathOperation(a, b, operation)}`);
+</script>
