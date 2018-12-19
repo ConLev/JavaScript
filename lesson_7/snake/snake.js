@@ -182,18 +182,22 @@ const snake = {
     body: null,
     direction: null,
     lastStepDirection: null,
-    maxX: config.getRowsCount(),
-    maxY: config.getColsCount(),
+    maxX: null,
+    maxY: null,
 
     /**
      * Инициализирует змейку, откуда она будет начинать и ее направление.
      * @param {{x: int, y: int}[]} startBody Начальная позиция змейки.
-     * @param {string} direction Начальное направление игрока.
+     * @param {string} direction Начальное направление змейки.
+     * @param {int} getRowsCount - Количество строк.
+     * @param {int} getColsCount - Количество колонок.
      */
-    init(startBody, direction) {
+    init(startBody, direction, getRowsCount, getColsCount) {
         this.body = startBody;
         this.direction = direction;
         this.lastStepDirection = direction;
+        this.maxX = getRowsCount;
+        this.maxY = getColsCount;
     },
 
     /**
@@ -514,7 +518,7 @@ const game = {
         // Ставим статус игры в "остановлена".
         this.stop();
         // Инициализируем змейку.
-        this.snake.init(this.getStartSnakeBody(), 'up');
+        this.snake.init(this.getStartSnakeBody(), 'up', this.config.getRowsCount(), this.config.getRowsCount());
         // Ставим еду на карту в случайную пустую ячейку.
         this.food.setCoordinates(this.getRandomFreeCoordinates());
         // Сбрасываем счётчик очков.
