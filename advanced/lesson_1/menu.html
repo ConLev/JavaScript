@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu</title>
+</head>
+<body>
+<div id="menu"></div>
+<button id="remove">Удалить меню</button>
+<script src="MenuItem.js"></script>
+<script src="Menu.js"></script>
+<script>
+    window.onload = () => {
+        // DOM ready
+        let block = document.getElementById('menu');
+
+        let menu = new Menu('my', 'my', [
+            new MenuItem('/', 'Home'),
+            new MenuItem('/about', 'About'),
+            new MenuItem('/policy', 'Policy'),
+            new SubMenu('my', 'my', [
+                new MenuItem('/about', 'About'),
+                new MenuItem('/contacts', 'Contacts'),
+                new MenuItem('/policy', 'Policy'),
+                new MenuItem('/blog', 'Blog'),
+            ]),
+            new MenuItem('/blog', 'Blog'),
+        ]);
+
+        block.innerHTML = menu.render();
+        document.getElementById('remove').addEventListener('click',
+            () => Menu.remove());
+    }
+</script>
+</body>
+</html>
