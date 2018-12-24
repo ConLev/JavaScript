@@ -1,0 +1,36 @@
+* {
+    margin: 0;
+    padding: 0;
+    outline: none;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+h3, p {
+    margin: 10px 0;
+}
+
+legend {
+    margin: 20px 0 10px 0;
+}
+
+input {
+    margin: 0 5px 10px 0;
+}
+
+#submit {
+    margin: 20px 0 10px 0;
+    border: 1px solid #eaeaea;
+    background-color: #ffffff;
+    color: #4a4a4a;
+    text-transform: uppercase;
+    padding: 5px 10px;
+}
+
+#submit:hover {
+    background-color: #f16d7f;
+    color: #ffffff;
+}
