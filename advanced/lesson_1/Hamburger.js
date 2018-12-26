@@ -3,7 +3,7 @@ class Hamburger {
         this.form = form;
     }
 
-    static render() {
+    render() {
         let price = 0;
         let calories = 0;
         for (let i = 0; i < form.length; i++) {

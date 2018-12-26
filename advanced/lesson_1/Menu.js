@@ -8,9 +8,8 @@ class Menu {
     render() {
         let result = `<ul class="${this.className}" id="${this.id}">`;
         for (let i = 0; i < this.items.length; i++) {
-            if (this.items[i] instanceof MenuItem) {
-                result += this.items[i].render();
-            } else if (this.items[i] instanceof SubMenu) {
+            if (this.items[i] instanceof MenuItem ||
+                this.items[i] instanceof SubMenu) {
                 result += this.items[i].render();
             }
         }
@@ -18,9 +17,11 @@ class Menu {
         return result;
     }
 
-    static remove() {
-        let menu = document.getElementById('menu');
-        menu.removeChild(menu.firstChild);
+    remove() {
+        let menu = document.getElementById(this.id);
+        while (menu.firstChild) {
+            menu.removeChild(menu.firstChild);
+        }
     }
 }
 

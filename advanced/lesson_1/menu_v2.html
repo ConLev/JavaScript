@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Menu</title>
+    <title>Title</title>
 </head>
 <body>
 <div id="menu"></div>
-<button id="remove">Удалить меню</button>
+<button id="del-btn">Remove</button>
 <script src="MenuItem.js"></script>
-<script src="Menu.js"></script>
+<script src="Menu_v2.js"></script>
 <script>
     window.onload = () => {
         // DOM ready
@@ -18,18 +18,21 @@
             new MenuItem('/', 'Home'),
             new MenuItem('/about', 'About'),
             new MenuItem('/policy', 'Policy'),
-            new SubMenu('my', 'my', [
+            new SubMenu('/mens', 'Mens', 'me', 'me', [
                 new MenuItem('/about', 'About'),
-                new MenuItem('/contacts', 'Contacts'),
+                new SubMenu('/mens', 'Mens', 'me', 'me', [
+                    new MenuItem('/about', 'About'),
+                    new MenuItem('/policy', 'Policy'),
+                ]),
                 new MenuItem('/policy', 'Policy'),
-                new MenuItem('/blog', 'Blog'),
             ]),
-            new MenuItem('/blog', 'Blog'),
+            new MenuItem('/blog', 'Blog')
         ]);
 
         block.innerHTML = menu.render();
-        document.getElementById('remove').addEventListener('click',
-            () => menu.remove());
+        document.getElementById('del-btn').addEventListener('click', () => {
+            menu.remove();
+        });
     }
 </script>
 </body>
