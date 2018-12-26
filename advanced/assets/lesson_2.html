@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    let userJson = '{"name": "Anna", "age": 25, "isAdmin": true}';
+
+    console.log(userJson);
+
+    let user = JSON.parse(userJson);
+    console.log(user);
+
+    user.address = {
+        city: 'Saint Petersburg',
+        postalCode: 999999
+    };
+    user.dateCreate = '2018-12-25';
+
+    console.log(user);
+
+    let jsonUser = JSON.stringify(user);
+    // let jsonUser = JSON.stringify(user, ['name', 'address', 'city', 'postalCode'], 4);
+    console.log(jsonUser);
+
+    let user2 = JSON.parse(jsonUser, (key, value) => {
+        console.log(key, value);
+        if(key === 'dateCreate'){
+            value = new Date(value);
+        }
+        return value;
+    });
+    console.log(user2);
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    // Promise
+    // let getData = new Promise((resolve, reject) => {
+    //     fetch('ids.json')
+    //         .then(result => result.json())
+    //         .then(data => resolve(data))
+    //         .catch(errors => reject(errors));
+    // });
+    // let getJob = userID => {
+    //     return new Promise((resolve, reject) => {
+    //         fetch(`some.php?id=${userID}`)
+    //                 .then(result => result.json())
+    //                 .then(data => resolve(data))
+    //                 .catch(errors => reject(errors));
+    //     })
+    // };
+
+
+    let getData = new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve([453, 765, 921]);
+            // reject('some error');
+        }, 1500)
+    });
+    let getJob = userID => {
+        return new Promise((resolve, reject) => {
+            setTimeout(ID => {
+                let userData = {
+                    name: 'John',
+                    job: 'full-stack developer'
+                };
+                resolve(`User with ${ID} is ${userData.job}`);
+            }, 1500, userID)
+        })
+    };
+    // getData
+    //     .then(IDs => {
+    //         console.log(IDs);
+    //         return getJob(IDs[1]);
+    //     })
+    //     .then(job => console.log(job))
+    //     .catch(errors => console.log(errors));
+
+    async function getJobAW() {
+        let IDs = await getData;
+        console.log(IDs);
+        let job = await getJob(IDs[2]);
+        console.log(job);
+        return job;
+    }
+
+    getJobAW().then(job => console.log(job));
+</script>
+</body>
+</html>

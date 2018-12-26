@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="data-ajax"></div>
+<button id="ajax-get">Async get data</button>
+<script>
+    window.onload = () => {
+        document.getElementById('ajax-get').addEventListener('click', () => {
+
+            // ActiveX - IE6
+
+            // es5
+            // let xhr = new XMLHttpRequest();
+            // xhr.open('GET', 'tel.json', true); // false - синхронный запрос
+            //
+            // xhr.onreadystatechange = () => {
+            //     console.log(xhr.readyState);
+            //     // xhr.readyState
+            //     // 0 - запрос не инициализирован
+            //     // 1 - загрузка данных на сервер
+            //     // 2 - запрос принят сервером
+            //     // 3 - идет обмен данными
+            //     // 4 - запрос выполнен
+            //
+            //     if (xhr.readyState !== 4){
+            //         return
+            //     }
+            //     if (xhr.status !== 200){
+            //         console.log(`Error ${xhr.status} ${xhr.statusText}`);
+            //     } else {
+            //         console.log(`ok ${xhr.responseText}`);
+            //         let data = JSON.parse(xhr.responseText);
+            //         let block = document.getElementById('data-ajax');
+            //         block.innerHTML = `Phone number ${data.tel} (${data.title})`;
+            //     }
+            // };
+
+            // xhr.send();
+
+            // es6
+            let block = document.getElementById('data-ajax');
+            fetch('tel.json')
+                .then(result => {
+                    console.log(result);
+                    return result.json();
+                })
+                .then(data => {
+                    block.innerHTML = `Phone number ${data.tel} (${data.title})`;
+                })
+                .catch(errors => console.log(errors));
+        })
+    }
+</script>
+</body>
+</html>
