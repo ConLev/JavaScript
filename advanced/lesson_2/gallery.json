@@ -1,0 +1,6 @@
+[
+  {"src": "images/min/1.jpg", "srcMax": "images/max/1.jpg", "alt": "img-1"},
+  {"src": "images/min/2.jpg", "srcMax": "images/max/2.jpg", "alt": "img-2"},
+  {"src": "images/min/3.jpg", "srcMax": "images/max/3.jpg", "alt": "img-3"},
+  {"src": "images/min/4.jpg", "srcMax": "images/max/4.jpg", "alt": "img-4"}
+]

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>gallery</title>
+</head>
+<body>
+<div id="gallery"></div>
+<script>
+    window.onload = () => {
+        //let block = document.getElementById('gallery');
+        fetch('gallery.json')
+            .then(result => {
+                console.log(result);
+                return result.json();
+            })
+            .then(data => {
+                for(let i=0; i<data.length; i++){
+                    console.log (`${data[i].src} ${data[i].srcMax} ${data[i].alt}`);
+                }
+            })
+            .catch(errors => console.log(errors));
+    }
+</script>
+</body>
+</html>
