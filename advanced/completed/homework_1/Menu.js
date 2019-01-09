@@ -16,6 +16,7 @@ class Menu {
         return result;
     }
     remove(){
+        //TODO: remove DOM element
         let el = document.getElementById(this.id);
         if (el){
             el.remove();
