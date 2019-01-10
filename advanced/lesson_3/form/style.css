@@ -1,0 +1,40 @@
+.container {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.isValid {
+    border-color: lawngreen;
+}
+
+.noValid {
+    border-color: red;
+}
+
+input {
+    border: 2px solid grey;
+    border-radius: 5px;
+    height: 20px;
+    width: 200px;
+    padding: 0 10px;
+    margin-top: 20px;
+}
+
+legend {
+    color: darkred;
+    font-size: 12px;
+}
+
+button {
+    background-color: #00d021;
+    color: white;
+    border: 1px solid grey;
+    border-radius: 5px;
+    width: 100px;
+    padding: 5px 0;
+}
+
+button:hover {
+    background-color: green;
+}
