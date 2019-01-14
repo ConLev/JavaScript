@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Control</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <div class="menu_horizontal">
+        <ul class="menu_horizontal_ul">
+            <li class="menu_horizontal_li">Первая вкладка</li>
+            <li class="menu_horizontal_li active">Вторая вкладка</li>
+            <li class="menu_horizontal_li">Третья вкладка</li>
+            <li class="menu_horizontal_li">Четвертая вкладка</li>
+        </ul>
+    </div>
+    <div class="horizontal_content">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad consectetur mollitia obcaecati praesentium!
+            Animi asperiores distinctio explicabo laboriosam, saepe vitae.</p><br>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, assumenda cupiditate dolores laboriosam
+            quo voluptate! Aperiam architecto cumque debitis earum eligendi, exercitationem fugiat harum iste nihil nisi
+            qui quisquam quod reprehenderit repudiandae sequi sint tempore totam vero! At, dolores, nisi?</p>
+    </div>
+    <div class="horizontal_content show">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores dicta harum itaque repudiandae soluta!
+            Cupiditate harum hic ipsa ipsam minima nihil nobis odit? Ad, dolorem doloremque eaque earum eligendi enim
+            illum in itaque libero magnam quod quos soluta sunt, ullam.</p>
+    </div>
+    <div class="horizontal_content">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam, reiciendis!</p><br>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, labore quae? Dolorum recusandae sit ut.</p><br>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum eaque est hic id ipsam, itaque iure minima
+            repudiandae veniam. Excepturi in obcaecati sequi? Cumque error molestias nisi ratione sint temporibus?</p>
+    </div>
+    <div class="horizontal_content">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam doloremque expedita explicabo nisi officiis
+            repudiandae.</p><br>
+        <p>Lorem ipsum dolor sit amet.</p><br>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum neque quasi recusandae tempora ullam. Adipisci
+            consectetur consequatur deleniti dicta dignissimos eum exercitationem, fugiat harum impedit nesciunt
+            officiis possimus quis repudiandae rerum totam unde veritatis voluptates.</p>
+    </div>
+    <div class="menu_vertical">
+        <ul class="menu_vertical_ul">
+            <li class="menu_vertical_li">Первая вкладка</li>
+            <li class="menu_vertical_li">Вторая вкладка</li>
+            <li class="menu_vertical_li active">Третья вкладка</li>
+            <li class="menu_vertical_li">Четвертая вкладка</li>
+        </ul>
+    </div>
+    <div class="vertical_content">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad consectetur mollitia obcaecati praesentium!
+            Animi asperiores distinctio explicabo laboriosam, saepe vitae.</p><br>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, assumenda cupiditate dolores laboriosam
+            quo voluptate! Aperiam architecto cumque debitis earum eligendi, exercitationem fugiat harum iste nihil nisi
+            qui quisquam quod reprehenderit repudiandae sequi sint tempore totam vero! At, dolores, nisi?</p>
+    </div>
+    <div class="vertical_content">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores dicta harum itaque repudiandae soluta!
+            Cupiditate harum hic ipsa ipsam minima nihil nobis odit? Ad, dolorem doloremque eaque earum eligendi enim
+            illum in itaque libero magnam quod quos soluta sunt, ullam.</p><br>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad corporis illo illum officia perspiciatis quis
+            recusandae repudiandae ullam voluptatibus? Animi dicta dignissimos dolor eligendi odit quae quidem quo
+            ratione voluptatem?</p>
+    </div>
+    <div class="vertical_content show">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam, reiciendis!</p><br>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, labore quae? Dolorum recusandae sit ut.</p><br>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum eaque est hic id ipsam, itaque iure minima
+            repudiandae veniam. Excepturi in obcaecati sequi? Cumque error molestias nisi ratione sint temporibus?</p>
+    </div>
+    <div class="vertical_content">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam doloremque expedita explicabo nisi officiis
+            repudiandae.</p><br>
+        <p>Lorem ipsum dolor sit amet.</p><br>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum neque quasi recusandae tempora ullam. Adipisci
+            consectetur consequatur deleniti dicta dignissimos eum exercitationem, fugiat harum impedit nesciunt
+            officiis possimus quis repudiandae rerum totam unde veritatis voluptates.</p>
+    </div>
+</div>
+<script src="jquery.min.js"></script>
+<script>
+    $(document).ready(() => {
+        let $mH = $('.menu_horizontal_li');
+        let $hC = $('.horizontal_content');
+        let $mV = $('.menu_vertical_li');
+        let $vC = $('.vertical_content');
+        $mH.on('click', (event) => {
+            $mH.removeClass('active');
+            $(event.currentTarget).addClass('active');
+            let $listActive = $('.menu_horizontal .active');
+            console.log($listActive);
+            let $index = $mH.index($listActive);
+            console.log($index);
+            $hC.removeClass('show');
+            $hC.eq($index).addClass('show');
+        });
+        $mV.on('click', (event) => {
+            $mV.removeClass('active');
+            $(event.currentTarget).addClass('active');
+            let $listActive = $('.menu_vertical .active');
+            console.log($listActive);
+            let $index = $mV.index($listActive);
+            console.log($index);
+            $vC.removeClass('show');
+            $vC.eq($index).addClass('show');
+        });
+    });
+</script>
+</body>
+</html>
