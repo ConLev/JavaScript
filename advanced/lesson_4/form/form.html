@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>valid_form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <form action="#" method="post" id="my_form">
+        <label>
+            Your name
+            <input type="text" id="name" placeholder="Имя">
+            <legend id="no_valid_name"></legend>
+        </label>
+        <label>
+            Your phone
+            <input type="text" id="phone" placeholder="+7(000)000-0000">
+            <legend id="no_valid_phone"></legend>
+        </label>
+        <label>
+            Your email
+            <input type="text" id="email" placeholder="mymail@mail.ru">
+            <legend id="no_valid_email"></legend>
+            <br>
+        </label>
+        <textarea id="comment" cols="40" rows="10" placeholder="Текст комментария"></textarea><br>
+        <label for="city"></label>
+        <select id="city">
+            <option selected>Выберите город</option>
+        </select><br>
+        <button type="submit">Отправить</button>
+    </form>
+</div>
+<script src="jquery.min.js"></script>
+<script src="jquery.mask.min.js"></script>
+<script>
+    $(document).ready(() => {
+        $('#phone').mask('+7(000)000-0000');
+        fetch('cities.json')
+            .then(result => {
+                console.log(result);
+                return result.json();
+            })
+            .then(data => {
+                for (let $city of data) {
+                    $('#city').append(`<option value="${$city.value}">${$city.label}</option>`);
+                }
+            })
+            .catch(errors => console.log(errors));
+        document.getElementById('my_form').addEventListener('submit', e => {
+            let name = document.getElementById('name');
+            let phone = document.getElementById('phone');
+            let email = document.getElementById('email');
+            let validForm = new ValidForm(name, phone, email);
+            validForm.init();
+            if (!validForm.valid) {
+                e.preventDefault();
+            }
+        })
+    });
+</script>
+<script src="ValidForm.js"></script>
+</body>
+</html>

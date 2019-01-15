@@ -1,0 +1,10 @@
+
+[
+  {"label": "Москва", "value": "Moscow"},
+  {"label": "Санкт-Петербург", "value": "St. Petersburg"},
+  {"label": "Волгоград", "value": "Volgograd"},
+  {"label": "Новгород", "value": "Novgorod"},
+  {"label": "Ростов", "value": "Rostov"},
+  {"label": "Хабаровск", "value": "Khabarovsk"},
+  {"label": "Красноярск", "value": "Krasnoyarsk"}
+]
