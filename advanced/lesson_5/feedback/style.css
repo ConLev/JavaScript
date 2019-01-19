@@ -1,0 +1,95 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    margin: 50px;
+}
+
+.reviews {
+}
+
+.reviews-header {
+
+}
+
+.review {
+    margin-top: 20px;
+}
+
+.no_publish {
+    background-color: yellow;
+}
+
+.review-author {
+    color: #f16d7f;
+}
+
+.review-text {
+    color: #c0c0c0;
+    margin-top: 10px;
+}
+
+.approve {
+    color: #c0c0c0;
+    font-size: 14px;
+    font-weight: 400;
+    border: 1px solid #eaeaea;
+    border-radius: 15px;
+    background-color: white;
+    margin-top: 20px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.approve:hover {
+    color: #fff;
+    background-color: #f16d7f;
+}
+
+.form-feedback {
+    margin-top: 50px;
+    display: grid;
+    justify-content: center;
+}
+
+.feedback-author_label {
+    color: #c0c0c0;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.feedback-author {
+    border: 1px solid grey;
+    border-radius: 5px;
+    height: 20px;
+    width: 200px;
+    padding: 0 10px;
+    margin-left: 10px;
+}
+
+.feedback-text {
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.feedback-submit {
+    width: 100px;
+    color: #c0c0c0;
+    font-size: 18px;
+    font-weight: 400;
+    border: 1px solid #eaeaea;
+    border-radius: 15px;
+    background-color: white;
+    margin-top: 20px;
+    padding: 5px 0;
+    cursor: pointer;
+}
+
+.feedback-submit:hover {
+    color: #fff;
+    background-color: #f16d7f;
+}

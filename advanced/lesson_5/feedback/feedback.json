@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "author": "Ann",
+    "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium, aliquid, assumenda blanditiis consequuntur dicta distinctio eos error ipsa iure laborum minima molestiae mollitia nobis nostrum numquam officia porro quas quibusdam recusandae reiciendis reprehenderit tempore voluptas! Accusamus animi blanditiis corporis excepturi exercitationem laudantium qui voluptatibus.",
+    "approved": false
+  },
+  {
+    "id": 2,
+    "author": "Bob",
+    "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab deserunt eaque et iusto nam nostrum reprehenderit ut? Corporis culpa eum maiores, numquam possimus sapiente totam!",
+    "approved": false
+  },
+  {
+    "id": 3,
+    "author": "John",
+    "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusamus aperiam aut distinctio dolore dolorem dolorum ducimus eaque eveniet exercitationem expedita illo, incidunt maiores modi, nihil nobis non, nostrum obcaecati reiciendis saepe similique tempore voluptates.",
+    "approved": false
+  },
+  {
+    "id": 4,
+    "author": "Helen",
+    "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. At earum eos nostrum officia possimus quaerat.",
+    "approved": false
+  }
+]

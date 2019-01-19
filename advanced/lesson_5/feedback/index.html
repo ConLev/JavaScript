@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>feedback</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <div class="reviews">
+        <h3 class="reviews-header">Reviews</h3>
+    </div>
+    <form class="form-feedback" action="#" method="post">
+        <label class="feedback-author_label">Your name
+            <input class="feedback-author" placeholder="Your name" type="text">
+        </label>
+        <textarea class="feedback-text" cols="40" rows="10" placeholder="Your feedback"></textarea>
+        <button class="feedback-submit" type="submit">Send</button>
+    </form>
+</div>
+<script src="jquery-3.3.1.js"></script>
+<script src="Feedback.js"></script>
+<script>
+    $(document).ready(() => {
+        let feedback = new Feedback('feedback.json');
+        $('.feedback-submit').click(e => {
+            e.preventDefault();
+            let name = document.querySelector('.feedback-author').value;
+            let text = document.querySelector('.feedback-text').value;
+            feedback.addReview(name, text);
+        });
+    });
+</script>
+</body>
+</html>
