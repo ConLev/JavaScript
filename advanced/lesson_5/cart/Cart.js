@@ -9,14 +9,6 @@ class Cart {
     }
 
     _init() {
-        let $cart = $('.cart');
-        $cart.on('click', '.remBtn', e => {
-            this._remove(e.currentTarget);
-        });
-        $cart.on('click', '.quantity-value', e => {
-            console.log(e.currentTarget, $('.quantity-value').val());
-            this._updateQuantity(e.currentTarget);
-        });
         this._render();
         fetch(this.source)
             .then(result => result.json())
@@ -53,19 +45,19 @@ class Cart {
             'data-product': product.id_product
         });
         $container.append($(`<p class="product-name">${product.product_name}</p>`));
-        let $quantity = $('<input/>', {
-            class: 'quantity-value',
-            type: 'number',
-            min: 1,
-            value: product.quantity,
-            'data-id': product.id_product
+        let $quantity = $(`<input class="quantity" type="number" min="1"</input>`);
+        $quantity.val(+product.quantity);
+        $quantity.on('keydown paste', e => {
+            e.preventDefault();
+        });
+        $quantity.click(() => {
+            this._updateQuantity(product.id_product, $quantity.val())
         });
         $container.append($quantity);
         $container.append($(`<p class="product-price">${product.price} руб.</p>`));
-        let $remBtn = $('<button/>', {
-            class: 'remBtn',
-            text: '⨂',
-            'data-id': product.id_product
+        let $remBtn = $(`<button class="remBtn">&otimes;</button>`);
+        $remBtn.click(() => {
+            this._remove(product.id_product)
         });
         $container.append($remBtn);
         $container.appendTo($('.cart-items-wrap'));
@@ -78,7 +70,7 @@ class Cart {
 
     _updateCart(product) {
         let $container = $(`div[data-product="${product.id_product}"]`);
-        $container.find('.quantity-value').val(+product.quantity);
+        $container.find('.quantity').val(product.quantity);
         $container.find('.product-price').text(`${product.quantity * product.price} руб.`);
     }
 
@@ -105,32 +97,28 @@ class Cart {
         this._renderSum();
     }
 
-    //Попытка реализовать изменение кол-ва товаров используя value в input
-    _updateQuantity(id) {
-        let productId = +$(id).data('id');
-        let find = this.cartItems.find(product => product.id_product === productId);
-        console.log($("input[data-id='456']").val());
-        if (find.quantity > 1) {
-            find.quantity--;
+    _updateQuantity(id, quantity) {
+        let find = this.cartItems.find(product => product.id_product === id);
+        if (find.quantity < quantity) {
+            find.quantity = quantity;
+            this.countGoods++;
+            this.amount += find.price;
+            this._updateCart(find);
+        } else if (find.quantity > quantity) {
+            find.quantity = quantity;
             this.countGoods--;
             this.amount -= find.price;
-            this._updateCart(find);
-        } else {
-            //чтобы не уходило в минус
-            find.quantity = 1;
             this._updateCart(find);
         }
         this._renderSum();
     }
 
     _remove(id) {
-        let productId = +$(id).data('id');
-        let find = this.cartItems.find(product => product.id_product === productId);
-        let index = this.cartItems.findIndex(product => product.id_product === productId);
-        id.parentElement.remove();
+        let find = this.cartItems.find(product => product.id_product === id);
+        this.cartItems.splice(this.cartItems.indexOf(find), 1);
+        $(`div[data-product="${id}"]`).remove();
         this.amount -= find.price * find.quantity;
         this.countGoods -= find.quantity;
-        this.cartItems.splice(index, 1);
         this._renderSum();
     }
 }

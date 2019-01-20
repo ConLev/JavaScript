@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>target</title>
+</head>
+<body>
+<div class="some">
+    <a href="#" class="btn"><img src="https://placehold.it/20x20" alt="some">bottom</a>
+</div>
+<script src="jquery-3.3.1.js"></script>
+<script>
+    $(document).ready(() => {
+        $('.some').on('click', '.btn', e => {
+            console.log(e.target);
+            console.log(e.currentTarget);
+        });
+    });
+</script>
+</body>
+</html>

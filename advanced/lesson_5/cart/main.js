@@ -1,4 +1,5 @@
 $(document).ready(() => {
+
     // Товары
     let product1 = new Product(123, 'Ноутбук', 45600);
     let product2 = new Product(124, 'Мышь', 600);
