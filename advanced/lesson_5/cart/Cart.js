@@ -68,12 +68,14 @@ class Cart {
         $('.sum-price').text(`Общая сумма: ${this.amount} руб.`);
     }
 
+    // noinspection JSMethodCanBeStatic
     _updateCart(product) {
         let $container = $(`div[data-product="${product.id_product}"]`);
         $container.find('.quantity').val(product.quantity);
         $container.find('.product-price').text(`${product.quantity * product.price} руб.`);
     }
 
+    // noinspection JSUnusedGlobalSymbols
     addProduct(element) {
         let productId = +$(element).data('id');
         let find = this.cartItems.find(product => product.id_product === productId);
