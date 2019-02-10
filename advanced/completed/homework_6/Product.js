@@ -25,7 +25,7 @@ class Product {
         let $name = $('<p/>', {
             text: this.title
         });
-        let $price = $(`<p>Цена: <span class="product-price">${this.price}</span></p>`);
+        let $price = $(`<p>Цена: <span class="product-price">${this.price}</span> руб.</p>`);
         let $buyBtn = $('<button/>', {
             class: 'buyBtn',
             text: 'Купить',

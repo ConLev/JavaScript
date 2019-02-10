@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="bower_components/jasmine-core/lib/jasmine-core/jasmine.css">
+</head>
+<body>
+<script src="bower_components/jasmine-core/lib/jasmine-core/jasmine.js"></script>
+<script src="bower_components/jasmine-core/lib/jasmine-core/jasmine-html.js"></script>
+<script src="bower_components/jasmine-core/lib/jasmine-core/boot.js"></script>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
+<script src="Cart.js"></script>
+<script>
+    xdescribe('Соответствие значений', () => {
+        xit('Проверка а на значение 10', () => {
+            let a = 10; // то, что мы проверяем
+            expect(a).toBe(10); // сама проверка
+
+            // ===
+            //.toBeMoreThan(5)
+            //.toBeLessThan(5)
+
+            a = 9;
+            expect(a).not.toBe(0);
+        })
+    });
+    describe('Дополнительные функции', () => {
+        it('Сравнение объектов', () => {
+            let myGo = () => {
+            };
+
+            let user1 = {
+                name: 'Ann',
+                age: 20,
+                go: myGo
+            };
+            let user2 = {
+                name: 'Ann',
+                age: 20,
+                go: myGo
+            };
+            expect(user1).toEqual(user2);
+        });
+        it('Проверка на null', () => {
+            expect(null).toBeNull();
+            expect(true).not.toBeNull();
+        });
+        it('Проверка на undefined', () => {
+            expect(undefined).toBeUndefined();
+            expect(true).not.toBeUndefined();
+        });
+        it('Проверка на true', () => {
+            expect(true).toBeTruthy();
+            expect(false).not.toBeTruthy();
+        });
+        it('Проверка на false', () => {
+            expect(false).toBeFalsy();
+            expect(true).not.toBeFalsy();
+        });
+        it('Проверка на NaN', () => {
+            expect(NaN).toBeNaN();
+            expect(true).not.toBeNaN();
+        });
+        it('Проверка по регулярному выражению', () => {
+            let str = 'Test AbcD jasmine';
+
+            expect(str).toMatch(/abcd/i);
+            expect(str).not.toMatch(/abcd/);
+        });
+        it('Проверка массива', () => {
+            let arr = ['red', 'blue', 'orange', 'black'];
+
+            expect(arr).toContain('black');
+            expect(arr).not.toContain('white');
+        });
+    });
+    describe('Тестирование корзины', () => {
+        it('Fetch запрос', async () => {
+            let newCart = await Cart.create('getCart.json');
+            expect(newCart.cartItems[0]).toEqual({
+                "id_product": 123,
+                "product_name": "Ноутбук",
+                "price": 45600,
+                "quantity": 1
+            })
+        })
+    })
+</script>
+</body>
+</html>
